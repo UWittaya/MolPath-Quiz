@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>การเปลี่ยนปริมาณสาร – ชุดข้อสอบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e9f0f5;--sf:#fff;--ink:#12263a;--mut:#58708a;--line:#c3d3e0;--br:#0f766e;--brs:#d7f0ec;--onbr:#fff;--bn:#fff1c7;--bnl:#f0b92e;--ok:#168a5c;--oks:#d9f4e6;--bad:#d4303c;--bads:#fde4e6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1a26;--sf:#14293a;--ink:#e8f1f8;--mut:#9db3c6;--line:#2b4459;--br:#5fe0cf;--brs:#12403d;--onbr:#06231f;--bn:#3b3213;--bnl:#c99a1f;--ok:#4ade9a;--oks:#12392a;--bad:#ff7079;--bads:#43202a}}
+:root[data-theme="dark"]{--bg:#0c1a26;--sf:#14293a;--ink:#e8f1f8;--mut:#9db3c6;--line:#2b4459;--br:#5fe0cf;--brs:#12403d;--onbr:#06231f;--bn:#3b3213;--bnl:#c99a1f;--ok:#4ade9a;--oks:#12392a;--bad:#ff7079;--bads:#43202a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Prompt','Noto Sans Thai',system-ui,sans-serif;line-height:1.7}
+.wrap{max-width:960px;margin:0 auto;padding:18px 14px 60px}
+h1{font-size:clamp(1.7rem,4.5vw,2.5rem);font-weight:700;margin:6px 0 12px;letter-spacing:-.01em}
+.banner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--bn);border:2px solid var(--bnl);border-radius:16px;padding:12px 16px;font-weight:500;font-size:clamp(.95rem,2.5vw,1.15rem)}
+.banner i{font-style:normal;color:var(--mut)}
+.how{color:var(--mut);font-size:.9rem;margin:8px 2px 0}
+.card{background:var(--sf);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:14px}
+.qn{color:var(--mut);font-size:.88rem}
+.qt{font-size:clamp(1.1rem,3vw,1.4rem);font-weight:600;margin:2px 0 18px}
+.chip{font:inherit;font-weight:600;border-radius:999px;padding:3px 14px;cursor:grab;border:2px solid var(--bnl);background:var(--sf);color:var(--ink);user-select:none;touch-action:manipulation;margin:0 2px}
+.chip.m{border-style:dashed}
+.chip.g{border-color:var(--br);background:var(--brs);color:var(--br)}
+.chip.sel{box-shadow:0 0 0 3px var(--br)}
+.chip.a{border-color:var(--ink);background:var(--sf);color:var(--ink)}
+.atoms{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 16px}
+.atoms:empty{display:none}
+.atoms i{font-style:normal;font-size:1.3rem;color:var(--mut)}
+.big{font-size:1.9rem;font-weight:700;color:var(--br);margin:4px 0}
+.ni{font:inherit;font-size:1.1rem;padding:12px 16px;border-radius:12px;border:2px solid var(--line);background:var(--sf);color:var(--ink);width:min(100%,320px);margin:8px 0 14px;text-align:center}
+.ni:focus{outline:3px solid var(--bnl);border-color:var(--bnl)}
+.eq{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.res{font-weight:600;background:var(--oks);border:2px solid var(--ok);border-radius:12px;padding:8px 12px}
+.op{font-size:1.8rem;font-weight:500;color:var(--mut)}
+.fr{display:inline-flex;flex-direction:column;align-items:stretch;gap:6px}
+.bar{height:3px;background:var(--ink);border-radius:2px}
+.zone{min-width:160px;min-height:52px;border:2px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;padding:4px 12px;font-size:1rem;color:var(--mut);background:var(--bg);transition:transform .15s,border-color .15s}
+.zone.filled{border:2px solid var(--br);background:var(--brs);color:var(--ink);font-weight:600}
+.zone.over{border-color:var(--bnl);transform:scale(1.05)}
+.zone.bad{border-color:var(--bad);animation:flash .5s 4}
+.mi{width:6.8em;border:0;border-bottom:2px solid var(--br);background:transparent;font:inherit;color:inherit;text-align:center;outline:none}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.btn{font:inherit;font-weight:600;border-radius:12px;padding:10px 20px;border:2px solid var(--br);background:var(--br);color:var(--onbr);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--br)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.chip:focus-visible,.opt:focus-visible{outline:3px solid var(--bnl);outline-offset:2px}
+.hint{background:var(--bads);border:2px solid var(--bad);border-radius:12px;padding:10px 14px;margin:14px 0 10px}
+.calc{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:20px}
+.calc:empty{display:none}
+.frac{display:inline-flex;flex-direction:column;align-items:center;font-size:1.3rem}
+.fn{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:4px 12px;border-bottom:3px solid var(--ink)}
+.fd{padding:4px 12px}
+.u{position:relative;display:inline-block;font-weight:600;padding:0 5px;border-radius:7px;transition:background .6s,outline-color .6s}
+.u::after{content:"";position:absolute;left:-2px;top:52%;height:3px;width:0;background:var(--bad);transition:width 1.6s ease-in-out}
+.u.pair{background:var(--bn);outline:2px solid var(--bnl)}
+.u.cut::after{width:calc(100% + 4px)}
+.u.cut{opacity:.55}
+.u.keep{background:var(--oks);outline:2px solid var(--ok);animation:pop .8s}
+.u.bad{color:var(--bad);animation:flash .5s 4}
+.okl{margin:18px 0 8px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.opt{font:inherit;font-weight:600;font-size:1.1rem;padding:14px;border-radius:14px;border:2px solid var(--line);background:var(--sf);color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--br)}
+.opt.right{background:var(--oks);border-color:var(--ok);color:var(--ok)}
+.opt.right::before{content:"✓ "}
+.opt.wrong{background:var(--bads);border-color:var(--bad);animation:shake .4s}
+.win{font-size:1.3rem;font-weight:700;color:var(--ok);margin:16px 0 4px}
+.sol{margin-top:14px;background:var(--bg);border-radius:14px;padding:6px 20px 12px}
+.sol[hidden]{display:none}
+.sol li{margin:8px 0}
+.sol code{background:var(--sf);border:1px solid var(--line);border-radius:8px;padding:2px 8px;font-family:inherit;font-weight:600}
+.cf{position:fixed;top:-14px;width:10px;height:14px;border-radius:2px;animation:fall 2.6s linear forwards;pointer-events:none;z-index:9}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
+@keyframes flash{50%{background:var(--bads);color:var(--bad)}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes pop{50%{transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.cf{display:none}}
+.mi{font-size:16px}
+.chip{touch-action:none}
+.banner{padding:6px 10px;margin:8px 0 10px;gap:5px 6px;border-radius:12px;border-width:1.5px}
+.how{font-size:.8rem;margin:0 0 8px}
+.qt{margin-bottom:6px}
+@media (max-width:560px){
+.wrap{padding:10px 8px 48px}.card{padding:14px 12px}
+.banner{padding:5px 7px;gap:4px 5px;font-size:.9rem;margin:6px 0 8px}
+.chip{padding:2px 10px;font-size:.92rem;min-height:34px;margin:0}
+.qt{font-size:1.1rem}
+.eq{gap:6px;flex-wrap:wrap;align-items:center}
+.res{flex:1 1 100%;text-align:center}.res+.op{display:none}
+.op{font-size:1.3rem}
+.eq>.zone,.fr{flex:1 1 0;min-width:0}
+.zone{min-width:0;min-height:58px;padding:4px 6px;font-size:.82rem;line-height:1.3;flex-wrap:wrap;text-align:center;gap:2px 4px}
+.mi{width:4.4em}
+.btns .btn{flex:1 1 100%;padding:12px}
+.opts{grid-template-columns:1fr 1fr}.opt{font-size:1rem;padding:12px 6px}
+.frac{font-size:1.05rem}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1>การเปลี่ยนปริมาณสาร</h1>
+<div class="banner" role="note">
+<button class="chip" draggable="true" data-id="one">1 mol</button><i>=</i><button class="chip" draggable="true" data-id="avo">6.02 × 10²³ อนุภาค</button><i>=</i><button class="chip m" draggable="true" data-id="mass">มวล (g) ของสาร 1 mol</button><i>=</i><button class="chip" draggable="true" data-id="molar">22.4 L ที่ STP</button>
+</div>
+<p class="how">ลากการ์ดไปวางในช่อง หรือแตะการ์ดแล้วแตะช่อง ลากการ์ดใหม่วางทับเพื่อเปลี่ยนได้เลย</p>
+
+<section class="card" id="play">
+<div class="qn" id="qn"></div>
+<p class="qt" id="qt"></p>
+<div class="atoms" id="atoms"></div>
+<div class="eq" id="eq"></div>
+<div class="btns"><button class="btn" id="go" disabled>ดำเนินการ</button><button class="btn ghost" id="clr">ล้างช่องทั้งหมด</button></div>
+<div id="fb" aria-live="polite"></div>
+<div class="calc" id="calc"></div>
+<div id="ch"></div>
+<div id="end"></div>
+<div class="sol" id="sol" hidden></div>
+</section>
+<section class="card" id="fin" hidden></section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const SUP={0:'⁰',1:'¹',2:'²',3:'³',4:'⁴',5:'⁵',6:'⁶',7:'⁷',8:'⁸',9:'⁹','-':'⁻'};
+const sup=n=>String(n).replace(/[-0-9]/g,c=>SUP[c]);
+function fmt(v){
+  if(v>=1e5||v<1e-2){let e=Math.floor(Math.log10(v)),m=+(v/10**e).toPrecision(4);if(m>=10){m/=10;e++}return m+' × 10'+sup(e)}
+  return String(+v.toPrecision(4));
+}
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,r)=>p[0]-r[0]).map(x=>x[1]);
+let ac;
+function beep(f,d=.14,type='sine',w=0){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+w;o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.1,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d)}catch(e){}}
+
+const Q=[
+{s:'N₂',p:'โมเลกุล',pre:'N₂ จำนวน ',post:' มีปริมาตรกี่ L ที่ STP',g:{nl:'2',dl:'2 mol',v:2,u:'mol N₂'},M:28,t:'L',tl:'ปริมาตร (L)',ans:44.8,ds:[0.0893,11.2,448],
+ sol:['โจทย์ให้ N₂ 2 mol และถามปริมาตรเป็น L ที่ STP','แฟคเตอร์ที่ใช้: 1 mol = 22.4 L ที่ STP','ตั้งให้ mol N₂ ตัดกันได้: <code>ปริมาตร = 2 mol N₂ × 22.4 L / 1 mol N₂</code>','คำนวณ: <code>2 × 22.4 / 1 = 44.8 L</code>']},
+{s:'CH₄',p:'โมเลกุล',pre:'CH₄ มวล ',post:' มีกี่ mol',g:{nl:'8',dl:'8 g',v:8,u:'g CH₄'},M:16,t:'mol CH₄',tl:'จำนวนโมล (mol)',ans:0.5,ds:[128,2,0.25],
+ sol:['โจทย์ให้ CH₄ 8 g และถามจำนวน mol','หามวลสูตร CH₄ = 12 + 4(1) = 16 จึงได้ 1 mol = 16 g','ตั้งให้ g CH₄ ตัดกันได้: <code>mol = 8 g CH₄ × 1 mol CH₄ / 16 g CH₄</code>','คำนวณ: <code>8 × 1 / 16 = 0.5 mol</code>']},
+{s:'SO₂',p:'โมเลกุล',pre:'SO₂ จำนวน ',post:' มีมวลกี่ g',g:{nl:'3.01 × 10²³',dl:'3.01 × 10²³ โมเลกุล',v:3.01e23,u:'โมเลกุล SO₂'},M:64,t:'g SO₂',tl:'มวล (g)',ans:32,ds:[64,128,16],
+ sol:['โจทย์ให้ SO₂ 3.01 × 10²³ โมเลกุล และถามมวลเป็น g','หามวลสูตร SO₂ = 32 + 2(16) = 64 จึงได้ 6.02 × 10²³ โมเลกุล = 64 g','ตั้งให้โมเลกุลตัดกันได้: <code>มวล = 3.01 × 10²³ โมเลกุล × 64 g / 6.02 × 10²³ โมเลกุล</code>','คำนวณ: <code>(3.01 × 10²³ × 64) / 6.02 × 10²³ = 32 g</code>']},
+{s:'H₂',p:'โมเลกุล',pre:'แก๊ส H₂ มวล ',post:' มีปริมาตรกี่ L ที่ STP',g:{nl:'3',dl:'3 g',v:3,u:'g H₂'},M:2,t:'L',tl:'ปริมาตร (L)',ans:33.6,ds:[0.0298,7.47,67.2],
+ sol:['โจทย์ให้ H₂ 3 g และถามปริมาตรเป็น L ที่ STP','หามวลสูตร H₂ = 2(1) = 2 จึงได้ 2 g = 22.4 L ที่ STP','ตั้งให้ g H₂ ตัดกันได้: <code>ปริมาตร = 3 g H₂ × 22.4 L / 2 g H₂</code>','คำนวณ: <code>3 × 22.4 / 2 = 33.6 L</code>']},
+{s:'O₂',p:'โมเลกุล',pre:'แก๊ส O₂ ปริมาตร ',post:' ที่ STP มีกี่โมเลกุล',g:{nl:'5.6',dl:'5.6 L',v:5.6,u:'L'},M:32,t:'โมเลกุล O₂',tl:'จำนวนโมเลกุล',ans:1.505e23,ds:[6.02e23,3.01e23,6.02e22],
+ sol:['โจทย์ให้ O₂ 5.6 L ที่ STP และถามจำนวนโมเลกุล','แฟคเตอร์ที่ใช้: 22.4 L = 6.02 × 10²³ โมเลกุล','ตั้งให้ L ตัดกันได้: <code>โมเลกุล = 5.6 L × 6.02 × 10²³ โมเลกุล / 22.4 L</code>','คำนวณ: <code>5.6 × 6.02 × 10²³ / 22.4 = 1.505 × 10²³ โมเลกุล</code>']},
+{s:'Al',p:'อะตอม',pre:'Al มวล ',post:' มีกี่อะตอม',g:{nl:'13.5',dl:'13.5 g',v:13.5,u:'g Al'},M:27,t:'อะตอม Al',tl:'จำนวนอะตอม',ans:3.01e23,ds:[6.02e23,1.505e23,8.13e24],
+ sol:['โจทย์ให้ Al 13.5 g และถามจำนวนอะตอม','มวลอะตอม Al = 27 จึงได้ 1 mol = 27 g = 6.02 × 10²³ อะตอม','ตั้งให้ g Al ตัดกันได้: <code>อะตอม = 13.5 g Al × 6.02 × 10²³ อะตอม Al / 27 g Al</code>','คำนวณ: <code>13.5 × 6.02 × 10²³ / 27 = 3.01 × 10²³ อะตอม</code>']},
+{s:'Cl⁻',p:'ไอออน',pre:'Cl⁻ จำนวน ',post:' มีมวลกี่ g',g:{nl:'1.806 × 10²⁴',dl:'1.806 × 10²⁴ ไอออน',v:1.806e24,u:'ไอออน Cl⁻'},M:35.5,t:'g Cl⁻',tl:'มวล (g)',ans:106.5,ds:[35.5,71,11.8],
+ sol:['โจทย์ให้ Cl⁻ 1.806 × 10²⁴ ไอออน และถามมวลเป็น g','มวลอะตอม Cl = 35.5 (มวลไอออนประมาณเท่ามวลอะตอม) จึงได้ 6.02 × 10²³ ไอออน = 35.5 g','ตั้งให้ไอออนตัดกันได้: <code>มวล = 1.806 × 10²⁴ ไอออน × 35.5 g / 6.02 × 10²³ ไอออน</code>','คำนวณ: <code>(1.806 × 10²⁴ × 35.5) / 6.02 × 10²³ = 106.5 g</code>']},
+{s:'C₂H₆',p:'โมเลกุล',two:1,at:{f:'C₂H₆',a:[['C',2],['H',6]]},pre:'C₂H₆ มวล ',post:' มีอะตอม H กี่อะตอม',g:{nl:'15',dl:'15 g',v:15,u:'g C₂H₆'},M:30,t:'อะตอม H',tl:'จำนวนอะตอม H',ans:1.806e24,ds:[3.01e23,1.204e24,1.806e25],
+ sol:['โจทย์ให้ C₂H₆ 15 g และถามจำนวนอะตอม H','มวลสูตร C₂H₆ = 2(12) + 6(1) = 30 จึงได้ 30 g = 6.02 × 10²³ โมเลกุล และ 1 โมเลกุล C₂H₆ มี H 6 อะตอม','ตั้งสมการ: <code>15 g C₂H₆ × 6.02 × 10²³ โมเลกุล C₂H₆ / 30 g C₂H₆ × 6 อะตอม H / 1 โมเลกุล C₂H₆</code>','คำนวณ: <code>15 × 6.02 × 10²³ × 6 / (30 × 1) = 1.806 × 10²⁴ อะตอม</code>']},
+{s:'H₂SO₄',p:'โมเลกุล',two:1,at:{f:'H₂SO₄',a:[['H',2],['S',1],['O',4]]},pre:'H₂SO₄ มวล ',post:' มีอะตอม O กี่อะตอม',g:{nl:'49',dl:'49 g',v:49,u:'g H₂SO₄'},M:98,t:'อะตอม O',tl:'จำนวนอะตอม O',ans:1.204e24,ds:[3.01e23,6.02e23,2.408e24],
+ sol:['โจทย์ให้ H₂SO₄ 49 g และถามจำนวนอะตอม O','มวลสูตร H₂SO₄ = 2(1) + 32 + 4(16) = 98 จึงได้ 98 g = 6.02 × 10²³ โมเลกุล และ 1 โมเลกุล H₂SO₄ มี O 4 อะตอม','ตั้งสมการ: <code>49 g H₂SO₄ × 6.02 × 10²³ โมเลกุล H₂SO₄ / 98 g H₂SO₄ × 4 อะตอม O / 1 โมเลกุล H₂SO₄</code>','คำนวณ: <code>49 × 6.02 × 10²³ × 4 / (98 × 1) = 1.204 × 10²⁴ อะตอม</code>']},
+{s:'CH₄',p:'โมเลกุล',two:1,at:{f:'CH₄',a:[['C',1],['H',4]]},pre:'CH₄ ที่มี H จำนวน ',post:' มีมวลกี่ g',g:{nl:'1.204 × 10²⁴',dl:'1.204 × 10²⁴ อะตอม',v:1.204e24,u:'อะตอม H'},M:16,t:'g CH₄',tl:'มวล (g)',ans:8,ds:[2,32,64],
+ sol:['โจทย์ให้ H 1.204 × 10²⁴ อะตอม และถามมวลของ CH₄','1 โมเลกุล CH₄ มี H 4 อะตอม และมวลสูตร CH₄ = 12 + 4(1) = 16 จึงได้ 6.02 × 10²³ โมเลกุล = 16 g','ตั้งให้อะตอม H และโมเลกุลตัดกันได้: <code>1.204 × 10²⁴ อะตอม H × 1 โมเลกุล CH₄ / 4 อะตอม H × 16 g CH₄ / 6.02 × 10²³ โมเลกุล CH₄</code>','คำนวณ: <code>1.204 × 10²⁴ × 1 × 16 / (4 × 6.02 × 10²³) = 8 g</code>']}
+];
+let deck=[],di=-1,q,S,locked,sel,cards,K,score=0,tries=0,got5=0;
+
+function newGame(){
+  const ix=Q.map((_,i)=>i);
+  deck=[...sh(ix.filter(i=>!Q[i].two)),...sh(ix.filter(i=>Q[i].two))];
+  di=-1;score=0;
+  $('#fin').hidden=true;$('#play').hidden=false;
+  next();
+}
+function next(){
+  if(di>=deck.length-1){finish();return}
+  di++;load(deck[di]);
+}
+function finish(){
+  $('#play').hidden=true;
+  const f=$('#fin');f.hidden=false;
+  f.innerHTML=`<div style="text-align:center"><div style="font-size:3.2rem">🎉</div><h2>ทำครบทุกข้อแล้ว!</h2><p>พิมพ์ชื่อของนักเรียนก่อนดูผลคะแนน</p><input id="nm" class="ni" maxlength="30" placeholder="ชื่อเล่นหรือชื่อ" autocomplete="off"><br><button class="btn" id="show" disabled>ดูผลคะแนน</button></div>`;
+}
+const MSG=[
+['{n}ทำได้ยอดเยี่ยมมาก โคตรเก่งอ่ะ {s}','สุดยอดไปเลย{n}! เปลี่ยนหน่วยได้แม่นเหมือนนักเคมีตัวจริง {s}','{n}เก่งมากกก! ตัดหน่วยได้คล่องขนาดนี้ ได้ {s}','ว้าว! {n}ฝีมือระดับเทพจริงๆ ได้ {s}'],
+['{n}ทำได้ดีมาก! อีกนิดเดียวก็เต็มแล้ว {s}','เก่งนะ{n}! เข้าใจหลักการตัดหน่วยดีแล้ว ได้ {s}','{n}ทำได้เยี่ยม ทบทวนอีกรอบจะเต็มแน่นอน {s}','ไปต่อได้สบายๆ เลย{n}! ได้ {s}'],
+['{n}ทำได้ดีแล้วนะ ได้ {s} ฝึกอีกนิดจะแม่นขึ้นอีกเยอะ','ผ่านครึ่งทางมาแล้ว{n}! ได้ {s} ลองดูเฉลยแล้วเล่นอีกรอบนะ','{n}กำลังไปได้สวย ได้ {s} สู้ต่ออีกนิด','ดีมากที่ไม่ยอมแพ้{n}! ได้ {s} รอบหน้าต้องดีกว่านี้แน่'],
+['ไม่เป็นไรนะ{n} ได้ {s} ทุกคนเริ่มจากตรงนี้ ลองใหม่อีกรอบนะ','{n}อย่าท้อนะ! ได้ {s} ลองเปิดเฉลยแล้วฝึกซ้ำ เดี๋ยวก็เก่งขึ้น','สู้ๆ นะ{n}! ได้ {s} ฝึกตัดหน่วยบ่อยๆ เดี๋ยวก็ชิน','{n}ทำมาถึงตรงนี้ก็เก่งแล้ว ได้ {s} ลองอีกครั้งนะ']
+];
+function result(){
+  const nm=$('#nm').value.trim(),mx=Q.length*10,p=score/mx;
+  const [e,t,m]=p>=.9?['🏆','ยอดเยี่ยมมาก!','เปลี่ยนหน่วยได้แม่นยำมาก พร้อมรับโจทย์ที่ท้าทายขึ้นแล้ว']:p>=.7?['🌟','เก่งมาก!','เข้าใจหลักการตัดหน่วยดีแล้ว ทบทวนอีกนิดก็เต็มคะแนน']:p>=.5?['👍','ทำได้ดี','มาถูกทางแล้ว ลองเปิดเฉลยละเอียดแล้วฝึกซ้ำอีกรอบนะ']:['💪','สู้ต่อไป!','ทุกคนเริ่มจากตรงนี้ ลองทำอีกครั้งโดยดูเฉลยประกอบ แล้วจะดีขึ้นแน่นอน'];
+  $('#play').hidden=true;
+  const f=$('#fin');f.hidden=false;
+  f.innerHTML=`<div style="text-align:center"><div style="font-size:4rem">${e}</div><h2 id="rt"></h2><p class="big">${score} / ${mx}</p><button class="btn" id="again">เล่นอีกครั้ง</button></div>`;
+  const lv=p>=.9?0:p>=.7?1:p>=.5?2:3;$('#rt').textContent=MSG[lv][Math.floor(Math.random()*MSG[lv].length)].replace('{n}',nm).replace('{s}',score+'/'+mx+' คะแนน');
+  if(p>=.5){confetti();beep(523,.15);beep(659,.15,'sine',.12);beep(784,.3,'sine',.24)}
+}
+function load(i){
+  q=Q[i];
+  cards={given:{id:'given',nl:q.g.nl,v:q.g.v,u:q.g.u},one:{id:'one',nl:'1',v:1,u:'mol '+q.s},avo:{id:'avo',nl:'6.02 × 10²³',v:6.02e23,u:q.p+' '+q.s},molar:{id:'molar',nl:'22.4',v:22.4,u:'L'},mass:{id:'mass',mass:1,nl:'',v:NaN,u:'g '+q.s}};
+  K=q.two?['A','B','C','D','E']:['A','B','C'];
+  let ah='';
+  if(q.at){cards.f={id:'f',nl:'1',v:1,u:q.p+' '+q.s};ah=`<button class="chip a" draggable="true" data-id="f">1 ${q.p} ${q.at.f}</button>`;q.at.a.forEach(([y,n],i)=>{cards['a'+i]={id:'a'+i,nl:String(n),v:n,u:'อะตอม '+y};ah+=`<i>=</i><button class="chip a" draggable="true" data-id="a${i}">${n} อะตอม ${y}</button>`})}
+  $('#atoms').innerHTML=ah;
+  tries=0;got5=0;
+  $('#qn').innerHTML=`ข้อที่ ${di+1} จาก ${deck.length}`;
+  $('#qt').innerHTML=`${q.pre}<button class="chip g" draggable="true" data-id="given">${q.g.dl}</button>${q.post}`;
+  $('#end').innerHTML='';$('#sol').hidden=true;$('#sol').innerHTML='';
+  reset();
+}
+function reset(){
+  S={A:null,B:null,C:null,D:null,E:null};locked=false;sel=null;
+  ['#calc','#fb','#ch'].forEach(s=>$(s).innerHTML='');
+  draw();
+}
+function zone(k){
+  const c=S[k];
+  const body=!c?'วางการ์ดที่นี่':c.mass?`<input class="mi" inputmode="decimal" placeholder="มวลสูตร" value="${isNaN(c.v)?'':c.v}" aria-label="พิมพ์มวลสูตร (g)"> ${c.u}`:`${c.nl} ${c.u}`;
+  return `<div class="zone${c?' filled':''}" data-k="${k}">${body}</div>`;
+}
+function draw(){
+  const fr=(t,b)=>`<span class="fr">${zone(t)}<span class="bar"></span>${zone(b)}</span>`;
+  $('#eq').innerHTML=`<span class="res">${q.tl}</span><b class="op">=</b>${zone('A')}<b class="op">×</b>${fr('B','C')}${q.two?`<b class="op">×</b>${fr('D','E')}`:''}`;
+  document.querySelectorAll('.chip').forEach(e=>e.classList.toggle('sel',e.dataset.id===sel));
+  upd();
+}
+function upd(){$('#go').disabled=locked||!K.every(k=>S[k]&&S[k].v>0)}
+function place(k,id){
+  const c=cards[id];if(!c||locked)return;
+  S[k]={...c};sel=null;draw();
+  if(c.mass){const mi=document.querySelector(`.zone[data-k=${k}] .mi`);mi&&mi.focus()}
+}
+const zoneOf=k=>document.querySelector(`.zone[data-k=${k}]`);
+
+document.addEventListener('click',e=>{
+  const ch=e.target.closest('.chip');
+  if(ch&&!locked){sel=sel===ch.dataset.id?null:ch.dataset.id;draw();return}
+  const zn=e.target.closest('.zone');
+  if(zn&&sel&&!locked)place(zn.dataset.k,sel);
+  const id=e.target.id;
+  if(id==='go')run();
+  if(id==='clr'&&!locked)reset();
+  if(id==='retry')reset();
+  if(id==='next')next();
+  if(id==='again')newGame();
+  if(id==='show'&&!$('#show').disabled)result();
+  if(id==='solb'){const s=$('#sol');s.hidden=!s.hidden;e.target.textContent=s.hidden?'เปิดเฉลยแบบละเอียด':'ซ่อนเฉลย'}
+  const op=e.target.closest('.opt');if(op&&!op.disabled)choose(op);
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='nm'){$('#show').disabled=!e.target.value.trim();return}
+  if(!e.target.classList.contains('mi'))return;
+  S[e.target.closest('.zone').dataset.k].v=parseFloat(e.target.value.replace(',','.'));upd();
+});
+document.addEventListener('dragstart',e=>{const c=e.target.closest('.chip');if(c)e.dataTransfer.setData('text',c.dataset.id)});
+document.addEventListener('dragover',e=>{const z=e.target.closest('.zone');if(z){e.preventDefault();z.classList.add('over')}});
+document.addEventListener('dragleave',e=>{const z=e.target.closest('.zone');if(z)z.classList.remove('over')});
+document.addEventListener('drop',e=>{const z=e.target.closest('.zone');if(z){e.preventDefault();z.classList.remove('over');place(z.dataset.k,e.dataTransfer.getData('text'))}});
+
+function hint(msg){
+  $('#fb').innerHTML=`<div class="hint">💡 ${msg}</div><button class="btn" id="retry">ลองใหม่อีกครั้ง</button>`;
+}
+function calc(){
+  const nm=c=>c.mass?fmt(c.v):c.nl;
+  const term=k=>`<span>${nm(S[k])} <span class="u" data-k="${k}">${S[k].u}</span></span>`;
+  const j=a=>a.map(term).join('<b>×</b>');
+  $('#calc').innerHTML=`<b>${q.tl} =</b><span class="frac"><span class="fn">${j(q.two?['A','B','D']:['A','B'])}</span><span class="fd">${j(q.two?['C','E']:['C'])}</span></span>`;
+}
+function run(){
+  if(locked)return;locked=true;upd();
+  try{ac&&ac.resume()}catch(e){}
+  calc();
+  const u=k=>document.querySelector(`#calc .u[data-k=${k}]`);
+  const N=q.two?['A','B','D']:['A','B'],Dn=q.two?['C','E']:['C'],used=[],pairs=[],miss=[];
+  Dn.forEach(d=>{const n=N.find(x=>!used.includes(x)&&S[x].u===S[d].u);if(n){used.push(n);pairs.push([d,n])}else miss.push(d)});
+  const rem=N.filter(x=>!used.includes(x));
+  if(miss.length||rem.length!==1||S[rem[0]].u!==q.t){
+    [...miss,...rem].forEach(k=>u(k).classList.add('bad'));
+    hint('หน่วยยังไม่ตัดกัน ลองสลับเศษส่วนหรือเลือกแฟคเตอร์ใหม่นะ!'+(!miss.length&&rem.length===1?` (หน่วยที่เหลือคือ ${S[rem[0]].u} แต่โจทย์ต้องการ ${q.t})`:''));
+    beep(160,.3,'sawtooth');return;
+  }
+  pairs.forEach(([d,n],i)=>{const pr=[u(d),u(n)],b=i*3000;
+    setTimeout(()=>{pr.forEach(e=>e.classList.add('pair'));beep(520,.2)},900+b);
+    setTimeout(()=>{pr.forEach(e=>e.classList.add('cut'));beep(660,.4);beep(880,.4,'sine',.5);beep(770,.4,'sine',1)},2400+b)});
+  const e0=2400+(pairs.length-1)*3000;
+  setTimeout(()=>{u(rem[0]).classList.add('keep');beep(988,.4)},e0+2400);
+  setTimeout(()=>after(),e0+3800);
+}
+function after(){
+  const v=S.A.v*S.B.v/S.C.v*(q.two?S.D.v/S.E.v:1);
+  if(Math.abs(v-q.ans)/q.ans>1e-3){
+    const m=K.find(k=>S[k].mass);
+    if(m&&Math.abs(S[m].v-q.M)>1e-6){zoneOf(m).classList.add('bad');hint(`หน่วยตัดกันถูกต้องแล้ว แต่มวลสูตรของ ${q.s} ยังไม่ถูก ลองรวมมวลอะตอมใหม่อีกครั้ง`)}
+    else hint('หน่วยตัดกันถูกต้องแล้ว แต่ตัวเลขยังไม่ถูก ตรวจสอบว่าใส่ตัวเลขตรงกับแฟคเตอร์หรือยัง');
+    beep(160,.3,'sawtooth');return;
+  }
+  got5=5;$('#ch').innerHTML=`<p class="okl">หน่วยที่เหลือคือ <b>${q.t}</b> ตรงกับที่โจทย์ถาม เลือกคำตอบที่ถูกต้อง</p><div class="opts">${sh([q.ans,...q.ds]).map(x=>`<button class="opt" data-v="${x}">${fmt(x)} ${q.t}</button>`).join('')}</div><div id="msg"></div>`;
+}
+function choose(b){
+  const v=parseFloat(b.dataset.v);
+  tries++;
+  if(Math.abs(v-q.ans)/q.ans<1e-3){
+    const pts=[5,3,1][tries-1]||0,qp=got5+pts;score+=qp;
+    b.classList.add('right');document.querySelectorAll('.opt').forEach(o=>o.disabled=true);
+    $('#msg').innerHTML='';
+    beep(523,.15);beep(659,.15,'sine',.12);beep(784,.3,'sine',.24);
+    confetti();
+    $('#end').innerHTML=`<div class="win">ถูกต้อง! ✓ ${fmt(q.ans)} ${q.t}</div><div class="btns"><button class="btn ghost" id="solb">เปิดเฉลยแบบละเอียด</button><button class="btn" id="next">${di>=deck.length-1?'ดูผลคะแนน':'ข้อถัดไป'}</button></div>`;
+    $('#sol').innerHTML=`<ol>${q.sol.map(s=>`<li>${s}</li>`).join('')}</ol>`;
+  }else{
+    b.classList.add('wrong');b.disabled=true;beep(160,.25,'sawtooth');
+    $('#msg').innerHTML='<div class="hint">ยังไม่ใช่ ลองคิดตัวเลขอีกรอบแล้วเลือกใหม่ได้เลย</div>';
+  }
+}
+function confetti(){
+  const cols=['#f0b92e','#0f9d8a','#7a5af8','#e5484d','#2f80ed'];
+  for(let i=0;i<46;i++){
+    const d=document.createElement('i');d.className='cf';
+    d.style.cssText=`left:${Math.random()*100}vw;background:${cols[i%5]};animation-delay:${Math.random()*.5}s;animation-duration:${2+Math.random()*1.5}s`;
+    document.body.appendChild(d);setTimeout(()=>d.remove(),4500);
+  }
+}
+let tg=null;
+const zAt=t=>{const el=document.elementFromPoint(t.clientX,t.clientY);return el&&el.closest('.zone')};
+document.addEventListener('touchstart',e=>{const c=e.target.closest('.chip');tg=c&&!locked?{c,x:e.touches[0].clientX,y:e.touches[0].clientY,g:null}:null},{passive:true});
+document.addEventListener('touchmove',e=>{
+  if(!tg)return;const t=e.touches[0];
+  if(!tg.g&&Math.hypot(t.clientX-tg.x,t.clientY-tg.y)>10){tg.g=tg.c.cloneNode(true);tg.g.style.cssText='position:fixed;z-index:99;pointer-events:none;opacity:.92;transform:translate(-50%,-60%);box-shadow:0 6px 16px rgba(0,0,0,.3)';document.body.appendChild(tg.g)}
+  if(!tg.g)return;
+  e.preventDefault();tg.g.style.left=t.clientX+'px';tg.g.style.top=t.clientY+'px';
+  document.querySelectorAll('.zone.over').forEach(z=>z.classList.remove('over'));
+  const z=zAt(t);if(z)z.classList.add('over');
+},{passive:false});
+document.addEventListener('touchend',e=>{
+  if(!tg)return;const {g,c}=tg;tg=null;if(!g)return;
+  e.preventDefault();g.remove();document.querySelectorAll('.zone.over').forEach(z=>z.classList.remove('over'));
+  const z=zAt(e.changedTouches[0]);if(z)place(z.dataset.k,c.dataset.id);
+},{passive:false});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='nm'&&e.target.value.trim())result()});
+$('#qn').after($('.how'));$('#qt').after($('.banner'));
+newGame();
+</script>
+</body>
+</html>
