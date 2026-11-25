@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>การเปลี่ยนปริมาณสาร – ชุดข้อสอบ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -99,6 +99,41 @@ h1{font-size:clamp(1.7rem,4.5vw,2.5rem);font-weight:700;margin:6px 0 12px;letter
 .opts{grid-template-columns:1fr 1fr}.opt{font-size:1rem;padding:12px 6px}
 .frac{font-size:1.05rem}
 }
+html{font-size:14px}
+.am{font:inherit;font-size:.8rem;border:1.5px solid var(--bnl);background:var(--bn);color:var(--ink);border-radius:999px;padding:1px 10px;cursor:pointer;margin-left:6px;vertical-align:middle}
+#pop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:50}
+#pop[hidden]{display:none}
+.pc{background:var(--sf);border-radius:16px;padding:16px 24px;min-width:210px;text-align:center}
+.pc ul{list-style:none;padding:0;margin:10px 0 14px;font-weight:600;font-size:1.15rem}
+@media (max-width:560px){
+.wrap{padding:6px 6px 40px}.card{padding:10px}
+h1{font-size:1.5rem;margin:2px 0 8px}
+.banner{padding:4px 6px;margin:4px 0 6px}
+.how{font-size:.75rem;margin:0 0 4px}
+.chip{padding:2px 9px;min-height:30px;font-size:.9rem}
+.zone{min-height:46px;font-size:.88rem;padding:3px 5px}
+.btns{margin-top:12px}.btns .btn{flex:1 1 auto;padding:8px 14px}
+.opt{padding:9px 4px;font-size:.95rem}
+.frac{font-size:1rem}
+}
+:root{--f2:#d6e9ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--f2:#1c3a5e}}
+:root[data-theme="dark"]{--f2:#1c3a5e}
+.eq{flex-wrap:nowrap}
+.fr.f2{background:var(--f2);border-radius:12px;padding:3px}
+.opt.pick{border-color:var(--br);background:var(--brs);color:var(--br)}
+h3{margin:14px 0 4px;font-size:1rem}
+.rv{text-align:left;background:var(--bg);border-radius:12px;padding:8px 12px;margin:8px 0;font-size:.9rem}
+.rv ol{margin:4px 0;padding-left:18px}
+.rv code{background:var(--sf);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-weight:600;font-family:inherit}
+@media (max-width:560px){
+.eq{gap:2px}
+.op{font-size:1rem;padding:0 1px}
+.zone{font-size:.76rem;padding:2px 3px;gap:1px 3px;line-height:1.25;min-height:44px}
+.zone .u{padding:0 1px}
+.mi{width:3.6em}
+.fr{gap:3px}.fr.f2{padding:2px}
+}
 </style>
 </head>
 <body>
@@ -122,8 +157,10 @@ h1{font-size:clamp(1.7rem,4.5vw,2.5rem);font-weight:700;margin:6px 0 12px;letter
 <div class="sol" id="sol" hidden></div>
 </section>
 <section class="card" id="fin" hidden></section>
+<section class="card" id="start" hidden></section>
 </main>
 
+<div id="pop" hidden></div>
 <script>
 const $=s=>document.querySelector(s);
 const SUP={0:'⁰',1:'¹',2:'²',3:'³',4:'⁴',5:'⁵',6:'⁶',7:'⁷',8:'⁸',9:'⁹','-':'⁻'};
@@ -139,43 +176,49 @@ function beep(f,d=.14,type='sine',w=0){try{ac=ac||new (window.AudioContext||wind
 const Q=[
 {s:'N₂',p:'โมเลกุล',pre:'N₂ จำนวน ',post:' มีปริมาตรกี่ L ที่ STP',g:{nl:'2',dl:'2 mol',v:2,u:'mol N₂'},M:28,t:'L',tl:'ปริมาตร (L)',ans:44.8,ds:[0.0893,11.2,448],
  sol:['โจทย์ให้ N₂ 2 mol และถามปริมาตรเป็น L ที่ STP','แฟคเตอร์ที่ใช้: 1 mol = 22.4 L ที่ STP','ตั้งให้ mol N₂ ตัดกันได้: <code>ปริมาตร = 2 mol N₂ × 22.4 L / 1 mol N₂</code>','คำนวณ: <code>2 × 22.4 / 1 = 44.8 L</code>']},
-{s:'CH₄',p:'โมเลกุล',pre:'CH₄ มวล ',post:' มีกี่ mol',g:{nl:'8',dl:'8 g',v:8,u:'g CH₄'},M:16,t:'mol CH₄',tl:'จำนวนโมล (mol)',ans:0.5,ds:[128,2,0.25],
+{s:'CH₄',p:'โมเลกุล',pre:'CH₄ มวล ',post:' มีกี่ mol',g:{nl:'8',dl:'8 g',v:8,u:'g CH₄'},M:16,t:'mol CH₄',am:[['C', 12], ['H', 1]],tl:'จำนวนโมล (mol)',ans:0.5,ds:[128,2,0.25],
  sol:['โจทย์ให้ CH₄ 8 g และถามจำนวน mol','หามวลสูตร CH₄ = 12 + 4(1) = 16 จึงได้ 1 mol = 16 g','ตั้งให้ g CH₄ ตัดกันได้: <code>mol = 8 g CH₄ × 1 mol CH₄ / 16 g CH₄</code>','คำนวณ: <code>8 × 1 / 16 = 0.5 mol</code>']},
-{s:'SO₂',p:'โมเลกุล',pre:'SO₂ จำนวน ',post:' มีมวลกี่ g',g:{nl:'3.01 × 10²³',dl:'3.01 × 10²³ โมเลกุล',v:3.01e23,u:'โมเลกุล SO₂'},M:64,t:'g SO₂',tl:'มวล (g)',ans:32,ds:[64,128,16],
+{s:'SO₂',p:'โมเลกุล',pre:'SO₂ จำนวน ',post:' มีมวลกี่ g',g:{nl:'3.01 × 10²³',dl:'3.01 × 10²³ โมเลกุล',v:3.01e23,u:'โมเลกุล SO₂'},M:64,t:'g SO₂',am:[['S', 32], ['O', 16]],tl:'มวล (g)',ans:32,ds:[64,128,16],
  sol:['โจทย์ให้ SO₂ 3.01 × 10²³ โมเลกุล และถามมวลเป็น g','หามวลสูตร SO₂ = 32 + 2(16) = 64 จึงได้ 6.02 × 10²³ โมเลกุล = 64 g','ตั้งให้โมเลกุลตัดกันได้: <code>มวล = 3.01 × 10²³ โมเลกุล × 64 g / 6.02 × 10²³ โมเลกุล</code>','คำนวณ: <code>(3.01 × 10²³ × 64) / 6.02 × 10²³ = 32 g</code>']},
-{s:'H₂',p:'โมเลกุล',pre:'แก๊ส H₂ มวล ',post:' มีปริมาตรกี่ L ที่ STP',g:{nl:'3',dl:'3 g',v:3,u:'g H₂'},M:2,t:'L',tl:'ปริมาตร (L)',ans:33.6,ds:[0.0298,7.47,67.2],
+{s:'H₂',p:'โมเลกุล',pre:'แก๊ส H₂ มวล ',post:' มีปริมาตรกี่ L ที่ STP',g:{nl:'3',dl:'3 g',v:3,u:'g H₂'},M:2,t:'L',am:[['H', 1]],tl:'ปริมาตร (L)',ans:33.6,ds:[0.0298,7.47,67.2],
  sol:['โจทย์ให้ H₂ 3 g และถามปริมาตรเป็น L ที่ STP','หามวลสูตร H₂ = 2(1) = 2 จึงได้ 2 g = 22.4 L ที่ STP','ตั้งให้ g H₂ ตัดกันได้: <code>ปริมาตร = 3 g H₂ × 22.4 L / 2 g H₂</code>','คำนวณ: <code>3 × 22.4 / 2 = 33.6 L</code>']},
 {s:'O₂',p:'โมเลกุล',pre:'แก๊ส O₂ ปริมาตร ',post:' ที่ STP มีกี่โมเลกุล',g:{nl:'5.6',dl:'5.6 L',v:5.6,u:'L'},M:32,t:'โมเลกุล O₂',tl:'จำนวนโมเลกุล',ans:1.505e23,ds:[6.02e23,3.01e23,6.02e22],
  sol:['โจทย์ให้ O₂ 5.6 L ที่ STP และถามจำนวนโมเลกุล','แฟคเตอร์ที่ใช้: 22.4 L = 6.02 × 10²³ โมเลกุล','ตั้งให้ L ตัดกันได้: <code>โมเลกุล = 5.6 L × 6.02 × 10²³ โมเลกุล / 22.4 L</code>','คำนวณ: <code>5.6 × 6.02 × 10²³ / 22.4 = 1.505 × 10²³ โมเลกุล</code>']},
-{s:'Al',p:'อะตอม',pre:'Al มวล ',post:' มีกี่อะตอม',g:{nl:'13.5',dl:'13.5 g',v:13.5,u:'g Al'},M:27,t:'อะตอม Al',tl:'จำนวนอะตอม',ans:3.01e23,ds:[6.02e23,1.505e23,8.13e24],
+{s:'Al',p:'อะตอม',pre:'Al มวล ',post:' มีกี่อะตอม',g:{nl:'13.5',dl:'13.5 g',v:13.5,u:'g Al'},M:27,t:'อะตอม Al',am:[['Al', 27]],tl:'จำนวนอะตอม',ans:3.01e23,ds:[6.02e23,1.505e23,8.13e24],
  sol:['โจทย์ให้ Al 13.5 g และถามจำนวนอะตอม','มวลอะตอม Al = 27 จึงได้ 1 mol = 27 g = 6.02 × 10²³ อะตอม','ตั้งให้ g Al ตัดกันได้: <code>อะตอม = 13.5 g Al × 6.02 × 10²³ อะตอม Al / 27 g Al</code>','คำนวณ: <code>13.5 × 6.02 × 10²³ / 27 = 3.01 × 10²³ อะตอม</code>']},
-{s:'Cl⁻',p:'ไอออน',pre:'Cl⁻ จำนวน ',post:' มีมวลกี่ g',g:{nl:'1.806 × 10²⁴',dl:'1.806 × 10²⁴ ไอออน',v:1.806e24,u:'ไอออน Cl⁻'},M:35.5,t:'g Cl⁻',tl:'มวล (g)',ans:106.5,ds:[35.5,71,11.8],
+{s:'Cl⁻',p:'ไอออน',pre:'Cl⁻ จำนวน ',post:' มีมวลกี่ g',g:{nl:'1.806 × 10²⁴',dl:'1.806 × 10²⁴ ไอออน',v:1.806e24,u:'ไอออน Cl⁻'},M:35.5,t:'g Cl⁻',am:[['Cl', 35.5]],tl:'มวล (g)',ans:106.5,ds:[35.5,71,11.8],
  sol:['โจทย์ให้ Cl⁻ 1.806 × 10²⁴ ไอออน และถามมวลเป็น g','มวลอะตอม Cl = 35.5 (มวลไอออนประมาณเท่ามวลอะตอม) จึงได้ 6.02 × 10²³ ไอออน = 35.5 g','ตั้งให้ไอออนตัดกันได้: <code>มวล = 1.806 × 10²⁴ ไอออน × 35.5 g / 6.02 × 10²³ ไอออน</code>','คำนวณ: <code>(1.806 × 10²⁴ × 35.5) / 6.02 × 10²³ = 106.5 g</code>']},
-{s:'C₂H₆',p:'โมเลกุล',two:1,at:{f:'C₂H₆',a:[['C',2],['H',6]]},pre:'C₂H₆ มวล ',post:' มีอะตอม H กี่อะตอม',g:{nl:'15',dl:'15 g',v:15,u:'g C₂H₆'},M:30,t:'อะตอม H',tl:'จำนวนอะตอม H',ans:1.806e24,ds:[3.01e23,1.204e24,1.806e25],
+{s:'C₂H₆',p:'โมเลกุล',two:1,at:{f:'C₂H₆',a:[['C',2],['H',6]]},pre:'C₂H₆ มวล ',post:' มีอะตอม H กี่อะตอม',g:{nl:'15',dl:'15 g',v:15,u:'g C₂H₆'},M:30,t:'อะตอม H',am:[['C', 12], ['H', 1]],tl:'จำนวนอะตอม H',ans:1.806e24,ds:[3.01e23,1.204e24,1.806e25],
  sol:['โจทย์ให้ C₂H₆ 15 g และถามจำนวนอะตอม H','มวลสูตร C₂H₆ = 2(12) + 6(1) = 30 จึงได้ 30 g = 6.02 × 10²³ โมเลกุล และ 1 โมเลกุล C₂H₆ มี H 6 อะตอม','ตั้งสมการ: <code>15 g C₂H₆ × 6.02 × 10²³ โมเลกุล C₂H₆ / 30 g C₂H₆ × 6 อะตอม H / 1 โมเลกุล C₂H₆</code>','คำนวณ: <code>15 × 6.02 × 10²³ × 6 / (30 × 1) = 1.806 × 10²⁴ อะตอม</code>']},
-{s:'H₂SO₄',p:'โมเลกุล',two:1,at:{f:'H₂SO₄',a:[['H',2],['S',1],['O',4]]},pre:'H₂SO₄ มวล ',post:' มีอะตอม O กี่อะตอม',g:{nl:'49',dl:'49 g',v:49,u:'g H₂SO₄'},M:98,t:'อะตอม O',tl:'จำนวนอะตอม O',ans:1.204e24,ds:[3.01e23,6.02e23,2.408e24],
+{s:'H₂SO₄',p:'โมเลกุล',two:1,at:{f:'H₂SO₄',a:[['H',2],['S',1],['O',4]]},pre:'H₂SO₄ มวล ',post:' มีอะตอม O กี่อะตอม',g:{nl:'49',dl:'49 g',v:49,u:'g H₂SO₄'},M:98,t:'อะตอม O',am:[['H', 1], ['S', 32], ['O', 16]],tl:'จำนวนอะตอม O',ans:1.204e24,ds:[3.01e23,6.02e23,2.408e24],
  sol:['โจทย์ให้ H₂SO₄ 49 g และถามจำนวนอะตอม O','มวลสูตร H₂SO₄ = 2(1) + 32 + 4(16) = 98 จึงได้ 98 g = 6.02 × 10²³ โมเลกุล และ 1 โมเลกุล H₂SO₄ มี O 4 อะตอม','ตั้งสมการ: <code>49 g H₂SO₄ × 6.02 × 10²³ โมเลกุล H₂SO₄ / 98 g H₂SO₄ × 4 อะตอม O / 1 โมเลกุล H₂SO₄</code>','คำนวณ: <code>49 × 6.02 × 10²³ × 4 / (98 × 1) = 1.204 × 10²⁴ อะตอม</code>']},
-{s:'CH₄',p:'โมเลกุล',two:1,at:{f:'CH₄',a:[['C',1],['H',4]]},pre:'CH₄ ที่มี H จำนวน ',post:' มีมวลกี่ g',g:{nl:'1.204 × 10²⁴',dl:'1.204 × 10²⁴ อะตอม',v:1.204e24,u:'อะตอม H'},M:16,t:'g CH₄',tl:'มวล (g)',ans:8,ds:[2,32,64],
+{s:'CH₄',p:'โมเลกุล',two:1,at:{f:'CH₄',a:[['C',1],['H',4]]},pre:'CH₄ ที่มี H จำนวน ',post:' มีมวลกี่ g',g:{nl:'1.204 × 10²⁴',dl:'1.204 × 10²⁴ อะตอม',v:1.204e24,u:'อะตอม H'},M:16,t:'g CH₄',am:[['C', 12], ['H', 1]],tl:'มวล (g)',ans:8,ds:[2,32,64],
  sol:['โจทย์ให้ H 1.204 × 10²⁴ อะตอม และถามมวลของ CH₄','1 โมเลกุล CH₄ มี H 4 อะตอม และมวลสูตร CH₄ = 12 + 4(1) = 16 จึงได้ 6.02 × 10²³ โมเลกุล = 16 g','ตั้งให้อะตอม H และโมเลกุลตัดกันได้: <code>1.204 × 10²⁴ อะตอม H × 1 โมเลกุล CH₄ / 4 อะตอม H × 16 g CH₄ / 6.02 × 10²³ โมเลกุล CH₄</code>','คำนวณ: <code>1.204 × 10²⁴ × 1 × 16 / (4 × 6.02 × 10²³) = 8 g</code>']}
 ];
-let deck=[],di=-1,q,S,locked,sel,cards,K,score=0,tries=0,got5=0;
+let deck=[],di=-1,q,S,locked,sel,cards,K,score=0,tries=0,got5=0,stu='',res=[],picked=null;
 
+function showStart(){
+  $('#play').hidden=true;$('#fin').hidden=true;const s=$('#start');s.hidden=false;
+  s.innerHTML=`<div style="text-align:center"><div style="font-size:3rem">✏️</div><h2>พร้อมแล้วใช่ไหม</h2><p>พิมพ์ชื่อของนักเรียนก่อนเริ่มทำโจทย์ ${Q.length} ข้อ</p><input id="nm" class="ni" maxlength="30" placeholder="ชื่อเล่นหรือชื่อ" autocomplete="off"><br><button class="btn" id="show" ${stu?'':'disabled'}>เริ่มทำโจทย์</button></div>`;
+  $('#nm').value=stu;
+}
+function begin(){stu=$('#nm').value.trim();if(stu)newGame()}
+function submit(){
+  const ok=picked!==null&&Math.abs(picked-q.ans)/q.ans<1e-3;
+  score+=5+(ok?5:0);res.push({q,n:di+1,v:picked,ok});next();
+}
 function newGame(){
   const ix=Q.map((_,i)=>i);
   deck=[...sh(ix.filter(i=>!Q[i].two)),...sh(ix.filter(i=>Q[i].two))];
   di=-1;score=0;
-  $('#fin').hidden=true;$('#play').hidden=false;
+  $('#fin').hidden=true;$('#start').hidden=true;$('#play').hidden=false;res=[];
   next();
 }
 function next(){
   if(di>=deck.length-1){finish();return}
   di++;load(deck[di]);
 }
-function finish(){
-  $('#play').hidden=true;
-  const f=$('#fin');f.hidden=false;
-  f.innerHTML=`<div style="text-align:center"><div style="font-size:3.2rem">🎉</div><h2>ทำครบทุกข้อแล้ว!</h2><p>พิมพ์ชื่อของนักเรียนก่อนดูผลคะแนน</p><input id="nm" class="ni" maxlength="30" placeholder="ชื่อเล่นหรือชื่อ" autocomplete="off"><br><button class="btn" id="show" disabled>ดูผลคะแนน</button></div>`;
-}
+function finish(){result()}
 const MSG=[
 ['{n}ทำได้ยอดเยี่ยมมาก โคตรเก่งอ่ะ {s}','สุดยอดไปเลย{n}! เปลี่ยนหน่วยได้แม่นเหมือนนักเคมีตัวจริง {s}','{n}เก่งมากกก! ตัดหน่วยได้คล่องขนาดนี้ ได้ {s}','ว้าว! {n}ฝีมือระดับเทพจริงๆ ได้ {s}'],
 ['{n}ทำได้ดีมาก! อีกนิดเดียวก็เต็มแล้ว {s}','เก่งนะ{n}! เข้าใจหลักการตัดหน่วยดีแล้ว ได้ {s}','{n}ทำได้เยี่ยม ทบทวนอีกรอบจะเต็มแน่นอน {s}','ไปต่อได้สบายๆ เลย{n}! ได้ {s}'],
@@ -183,11 +226,13 @@ const MSG=[
 ['ไม่เป็นไรนะ{n} ได้ {s} ทุกคนเริ่มจากตรงนี้ ลองใหม่อีกรอบนะ','{n}อย่าท้อนะ! ได้ {s} ลองเปิดเฉลยแล้วฝึกซ้ำ เดี๋ยวก็เก่งขึ้น','สู้ๆ นะ{n}! ได้ {s} ฝึกตัดหน่วยบ่อยๆ เดี๋ยวก็ชิน','{n}ทำมาถึงตรงนี้ก็เก่งแล้ว ได้ {s} ลองอีกครั้งนะ']
 ];
 function result(){
-  const nm=$('#nm').value.trim(),mx=Q.length*10,p=score/mx;
+  const nm=stu,mx=Q.length*10,p=score/mx;
   const [e,t,m]=p>=.9?['🏆','ยอดเยี่ยมมาก!','เปลี่ยนหน่วยได้แม่นยำมาก พร้อมรับโจทย์ที่ท้าทายขึ้นแล้ว']:p>=.7?['🌟','เก่งมาก!','เข้าใจหลักการตัดหน่วยดีแล้ว ทบทวนอีกนิดก็เต็มคะแนน']:p>=.5?['👍','ทำได้ดี','มาถูกทางแล้ว ลองเปิดเฉลยละเอียดแล้วฝึกซ้ำอีกรอบนะ']:['💪','สู้ต่อไป!','ทุกคนเริ่มจากตรงนี้ ลองทำอีกครั้งโดยดูเฉลยประกอบ แล้วจะดีขึ้นแน่นอน'];
+  const bad=res.filter(r=>!r.ok);
+  const wl=bad.length?`<h3>ข้อที่ต้องทบทวน (${bad.length} ข้อ)</h3>`+bad.map(r=>`<div class="rv"><b>ข้อที่ ${r.n}</b> ${r.q.pre}${r.q.g.dl}${r.q.post}<br>คำตอบของนักเรียน: <b>${fmt(r.v)} ${r.q.t}</b> · คำตอบที่ถูกต้อง: <b>${fmt(r.q.ans)} ${r.q.t}</b><ol>${r.q.sol.map(x=>`<li>${x}</li>`).join('')}</ol></div>`).join(''):'';
   $('#play').hidden=true;
   const f=$('#fin');f.hidden=false;
-  f.innerHTML=`<div style="text-align:center"><div style="font-size:4rem">${e}</div><h2 id="rt"></h2><p class="big">${score} / ${mx}</p><button class="btn" id="again">เล่นอีกครั้ง</button></div>`;
+  f.innerHTML=`<div style="text-align:center"><div style="font-size:4rem">${e}</div><h2 id="rt"></h2><p class="big">${score} / ${mx}</p>${wl}<button class="btn" id="again">เล่นอีกครั้ง</button></div>`;
   const lv=p>=.9?0:p>=.7?1:p>=.5?2:3;$('#rt').textContent=MSG[lv][Math.floor(Math.random()*MSG[lv].length)].replace('{n}',nm).replace('{s}',score+'/'+mx+' คะแนน');
   if(p>=.5){confetti();beep(523,.15);beep(659,.15,'sine',.12);beep(784,.3,'sine',.24)}
 }
@@ -200,7 +245,7 @@ function load(i){
   $('#atoms').innerHTML=ah;
   tries=0;got5=0;
   $('#qn').innerHTML=`ข้อที่ ${di+1} จาก ${deck.length}`;
-  $('#qt').innerHTML=`${q.pre}<button class="chip g" draggable="true" data-id="given">${q.g.dl}</button>${q.post}`;
+  $('#qt').innerHTML=`${q.pre}<button class="chip g" draggable="true" data-id="given">${q.g.dl}</button>${q.post}${q.am?' <button class="am" id="amb">⚖ มวลอะตอม</button>':''}`;
   $('#end').innerHTML='';$('#sol').hidden=true;$('#sol').innerHTML='';
   reset();
 }
@@ -211,12 +256,12 @@ function reset(){
 }
 function zone(k){
   const c=S[k];
-  const body=!c?'วางการ์ดที่นี่':c.mass?`<input class="mi" inputmode="decimal" placeholder="มวลสูตร" value="${isNaN(c.v)?'':c.v}" aria-label="พิมพ์มวลสูตร (g)"> ${c.u}`:`${c.nl} ${c.u}`;
+  const body=!c?'วางการ์ดที่นี่':c.mass?`<input class="mi" inputmode="decimal" placeholder="มวลสูตร" value="${isNaN(c.v)?'':c.v}" aria-label="พิมพ์มวลสูตร (g)"> <span class="u" data-k="${k}">${c.u}</span>`:`${c.nl} <span class="u" data-k="${k}">${c.u}</span>`;
   return `<div class="zone${c?' filled':''}" data-k="${k}">${body}</div>`;
 }
 function draw(){
-  const fr=(t,b)=>`<span class="fr">${zone(t)}<span class="bar"></span>${zone(b)}</span>`;
-  $('#eq').innerHTML=`<span class="res">${q.tl}</span><b class="op">=</b>${zone('A')}<b class="op">×</b>${fr('B','C')}${q.two?`<b class="op">×</b>${fr('D','E')}`:''}`;
+  const fr=(t,b,c='')=>`<span class="fr ${c}">${zone(t)}<span class="bar"></span>${zone(b)}</span>`;
+  $('#eq').innerHTML=`<b class="op">=</b>${zone('A')}<b class="op">×</b>${fr('B','C')}${q.two?`<b class="op">×</b>${fr('D','E','f2')}`:''}`;
   document.querySelectorAll('.chip').forEach(e=>e.classList.toggle('sel',e.dataset.id===sel));
   upd();
 }
@@ -235,11 +280,13 @@ document.addEventListener('click',e=>{
   if(zn&&sel&&!locked)place(zn.dataset.k,sel);
   const id=e.target.id;
   if(id==='go')run();
+  if(id==='amb')showAm();
+  if(id==='pclose'||id==='pop')$('#pop').hidden=true;
   if(id==='clr'&&!locked)reset();
   if(id==='retry')reset();
-  if(id==='next')next();
-  if(id==='again')newGame();
-  if(id==='show'&&!$('#show').disabled)result();
+  if(id==='next')submit();
+  if(id==='again')showStart();
+  if(id==='show'&&!$('#show').disabled)begin();
   if(id==='solb'){const s=$('#sol');s.hidden=!s.hidden;e.target.textContent=s.hidden?'เปิดเฉลยแบบละเอียด':'ซ่อนเฉลย'}
   const op=e.target.closest('.opt');if(op&&!op.disabled)choose(op);
 });
@@ -265,8 +312,7 @@ function calc(){
 function run(){
   if(locked)return;locked=true;upd();
   try{ac&&ac.resume()}catch(e){}
-  calc();
-  const u=k=>document.querySelector(`#calc .u[data-k=${k}]`);
+  const u=k=>document.querySelector(`.zone[data-k=${k}] .u`);
   const N=q.two?['A','B','D']:['A','B'],Dn=q.two?['C','E']:['C'],used=[],pairs=[],miss=[];
   Dn.forEach(d=>{const n=N.find(x=>!used.includes(x)&&S[x].u===S[d].u);if(n){used.push(n);pairs.push([d,n])}else miss.push(d)});
   const rem=N.filter(x=>!used.includes(x));
@@ -293,20 +339,9 @@ function after(){
   got5=5;$('#ch').innerHTML=`<p class="okl">หน่วยที่เหลือคือ <b>${q.t}</b> ตรงกับที่โจทย์ถาม เลือกคำตอบที่ถูกต้อง</p><div class="opts">${sh([q.ans,...q.ds]).map(x=>`<button class="opt" data-v="${x}">${fmt(x)} ${q.t}</button>`).join('')}</div><div id="msg"></div>`;
 }
 function choose(b){
-  const v=parseFloat(b.dataset.v);
-  tries++;
-  if(Math.abs(v-q.ans)/q.ans<1e-3){
-    const pts=[5,3,1][tries-1]||0,qp=got5+pts;score+=qp;
-    b.classList.add('right');document.querySelectorAll('.opt').forEach(o=>o.disabled=true);
-    $('#msg').innerHTML='';
-    beep(523,.15);beep(659,.15,'sine',.12);beep(784,.3,'sine',.24);
-    confetti();
-    $('#end').innerHTML=`<div class="win">ถูกต้อง! ✓ ${fmt(q.ans)} ${q.t}</div><div class="btns"><button class="btn ghost" id="solb">เปิดเฉลยแบบละเอียด</button><button class="btn" id="next">${di>=deck.length-1?'ดูผลคะแนน':'ข้อถัดไป'}</button></div>`;
-    $('#sol').innerHTML=`<ol>${q.sol.map(s=>`<li>${s}</li>`).join('')}</ol>`;
-  }else{
-    b.classList.add('wrong');b.disabled=true;beep(160,.25,'sawtooth');
-    $('#msg').innerHTML='<div class="hint">ยังไม่ใช่ ลองคิดตัวเลขอีกรอบแล้วเลือกใหม่ได้เลย</div>';
-  }
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('pick'));
+  b.classList.add('pick');picked=parseFloat(b.dataset.v);
+  $('#end').innerHTML=`<div class="btns"><button class="btn" id="next">${di>=deck.length-1?'ส่งคำตอบ ดูผลคะแนน':'ข้อถัดไป'}</button></div>`;
 }
 function confetti(){
   const cols=['#f0b92e','#0f9d8a','#7a5af8','#e5484d','#2f80ed'];
@@ -332,9 +367,11 @@ document.addEventListener('touchend',e=>{
   e.preventDefault();g.remove();document.querySelectorAll('.zone.over').forEach(z=>z.classList.remove('over'));
   const z=zAt(e.changedTouches[0]);if(z)place(z.dataset.k,c.dataset.id);
 },{passive:false});
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='nm'&&e.target.value.trim())result()});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='nm'&&e.target.value.trim())begin()});
+const showAm=()=>{const p=$('#pop');p.innerHTML=`<div class="pc"><b>มวลอะตอมที่ใช้ในข้อนี้</b><ul>${q.am.map(([y,m])=>`<li>${y} = ${m}</li>`).join('')}</ul><button class="btn" id="pclose">ปิด</button></div>`;p.hidden=false};
+document.addEventListener('focusin',e=>{if(e.target.classList&&e.target.classList.contains('mi'))setTimeout(()=>e.target.scrollIntoView({block:'center',behavior:'smooth'}),300)});
 $('#qn').after($('.how'));$('#qt').after($('.banner'));
-newGame();
+showStart();
 </script>
 </body>
 </html>
